@@ -24,7 +24,6 @@ module Axlsx
       @from = Marker.new
       parse_options options
       start_at(*options[:start_at]) if options[:start_at]
-      @object = Pic.new(self, options)
     end
 
     # A marker that defines the from cell anchor. The default from column and row are 0 and 0 respectively
@@ -32,7 +31,7 @@ module Axlsx
     attr_reader :from
 
     # The object this anchor hosts
-    # @return [Pic]
+    # @return [Pic, GraphicFrame]
     attr_reader :object
 
     # The drawing that holds this anchor
@@ -63,6 +62,18 @@ module Axlsx
 
     # @see width
     def width=(v) Axlsx::validate_unsigned_int(v); @width = v; end
+
+    # Creates a graphic frame and chart object associated with this anchor
+    # @return [Chart]
+    def add_chart(chart_type, options)
+      @object = GraphicFrame.new(self, chart_type, options)
+      @object.chart
+    end
+
+    # Creates an image associated with this anchor.
+    def add_pic(options={})
+      @object = Pic.new(self, options)
+    end
 
     # The index of this anchor in the drawing
     # @return [Integer]

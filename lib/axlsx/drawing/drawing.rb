@@ -80,19 +80,25 @@ module Axlsx
     # @see Worksheet#add_image
     # @return [Pic]
     def add_image(options={})
-      if options[:end_at]
-        TwoCellAnchor.new(self, options).add_pic(options)
-      else
+      if options[:width] && options[:height]
         OneCellAnchor.new(self, options)
+      else
+        TwoCellAnchor.new(self, options)
       end
-      @anchors.last.object
+      @anchors.last.object.add_pic(options)
     end
 
     # Adds a chart to the drawing.
     # @note The recommended way to manage charts is to use Worksheet.add_chart. Please refer to that method for documentation.
     # @see Worksheet#add_chart
     def add_chart(chart_type, options={})
-      TwoCellAnchor.new(self, options)
+      if options[:width] && options[:height]
+        puts "PTC- Using OneCellAnchor for #{chart_type} with options #{options}"
+        OneCellAnchor.new(self, options)
+      else
+        puts "PTC- Using TwoCellAnchor for #{chart_type} with options #{options}"
+        TwoCellAnchor.new(self, options)
+      end
       @anchors.last.add_chart(chart_type, options)
     end
 

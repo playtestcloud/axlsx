@@ -10,11 +10,11 @@ module Axlsx
     attr_reader :chart
 
     # A anchor that holds this frame
-    # @return [TwoCellAnchor]
+    # @return [OneCellAnchor, TwoCellAnchor]
     attr_reader :anchor
 
     # Creates a new GraphicFrame object
-    # @param [TwoCellAnchor] anchor
+    # @param [OneCellAnchor, TwoCellAnchor] anchor
     # @param [Class] chart_type
     def initialize(anchor, chart_type, options)
       DataTypeValidator.validate "Drawing.chart_type", Chart, chart_type
